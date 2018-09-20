@@ -19,53 +19,57 @@ public class MutantChecker {
 			return false;
 		if(!hasValidNXNDnaMatrix(dna))
 			return false;
-		return checkDna(dna);
+		return hasALotOfMutantSequences(dna);
 	}
 	
 	/**
 	 * Es mutante, si encuentras más de "MAX_MUTANTS_SEQUENCE" secuencia de "MAX_CONCAT_LETTERS" letras
-	 * iguales de forma oblicua, horizontal o vertical
-	 * 
-	 * @param dna
-	 * @return
-	 */
-	private static boolean checkDna(String[] dna) {
-		
-		char[][] matrix = transformToNxNMatrix(dna);
-		//REVIEW como negativo tiene que SUCCESS depende del orden del scaneo.
-		return scan(matrix);
-	}
-	
-	/**
-	 * Escaneamos la matriz NxN en busca de los sequences.
+	 * iguales de forma oblicua, horizontal o vertical. Escaneamos la matriz NxN en busca de de ellas.
 	 * Primeramente se escanea de forma horizontal, luego vertical y oblicua
 	 * @param matrix
 	 * @return boolean
 	 */
-	private static boolean scan(char[][] matrix){
+	private static boolean hasALotOfMutantSequences(String[] dna){
+		char[][] matrix = transformToNxNMatrix(dna);
 
 		// Horizontal Scan
 		int mutantSequences = 0;
 		for(int i=0; i < matrix[0].length; i++){
-			for(int x=0; matrix[0].length > x+MAX_CONCAT_LETTERS;x++){
-				if(matrix[i][x] == matrix[i][x+1] && matrix[i][x+1] == matrix[i][x+2] && matrix[i][x+2] == matrix[i][x+3]){ 
-					// hemos encontrado una sequencia. Ademas hacemos corrimiento porque no queremos scanear lo que y escaneamos  
-					x = x+4;
-					if(++mutantSequences >= MAX_MUTANT_SEQUENCE)
-						return true;
-				}
-			}
+			mutantSequences = mutantSequences + countMutantSequences(new String(matrix[i]));
+			if(mutantSequences >= MAX_MUTANT_SEQUENCE)
+				return true;
 		}
 
 		// Vertical Scan
-		for(int j=0; j < matrix[0].length; j++){
-			for(int x=0; matrix[0].length > x+MAX_CONCAT_LETTERS;x++){
-				if(matrix[x][j] == matrix[x+1][j] && matrix[x+1][j] == matrix[x+2][j] && matrix[x+2][j]== matrix[x+3][j]){
-					x = x+4;
-					if(++mutantSequences >= MAX_MUTANT_SEQUENCE)
-						return true;
-				}
+		for(int y=0; y < matrix[0].length; y++){
+			String word="";
+			for(int x=0; x < matrix[0].length; x++){
+				char letter = matrix[x][y];
+				word = word + letter;
 			}
+			mutantSequences = mutantSequences + countMutantSequences(word);
+			if(mutantSequences >= MAX_MUTANT_SEQUENCE)
+				return true;
+		}
+		
+		// diagonal Scan
+		for(int x=0; x < matrix[0].length; x++) {
+			String diagonal = ""; 
+			for(int y=0; y < matrix[0].length - x ; y++){
+				diagonal = diagonal + matrix[x+y][y];
+			}
+			mutantSequences = mutantSequences + countMutantSequences(diagonal);
+			if(mutantSequences >= MAX_MUTANT_SEQUENCE)
+				return true;
+		}
+		for(int y=1; y < matrix[0].length; y++) {
+			String diagonal = ""; 
+			for(int x=0; x < matrix[0].length - y; x++){
+				diagonal = diagonal + matrix[x][y+x];
+			}
+			mutantSequences = mutantSequences + countMutantSequences(diagonal);
+			if(mutantSequences >= MAX_MUTANT_SEQUENCE)
+				return true;
 		}
 		
 		return false;
@@ -82,25 +86,15 @@ public class MutantChecker {
 		for (String sequence: dna) {
 			matrix[i++] = sequence.toCharArray(); 
 		}
-		
 		return matrix;
 	}
 	
-	public static void printMatrix(String[] dna){
-		
-		char[][] matriz = transformToNxNMatrix(dna);
-		
-		for (int x=0; x < matriz.length; x++) {
-			  System.out.print("");
-			  for (int y=0; y < matriz[x].length; y++) {
-			    System.out.print (matriz[x][y]);
-			    if (y!=matriz[x].length-1) System.out.print("\t");
-			  }
-			  System.out.println("");
-			}
+	private static int countMutantSequences(String sequence) {
+		int mutantSequences = StringUtils.countMatches(sequence,"CCCC") + StringUtils.countMatches(sequence,"AAAA") + StringUtils.countMatches(sequence,"GGGG") + StringUtils.countMatches(sequence,"TTTT") ;
+		return mutantSequences;
 	}
 	
-	//////////////////////// Internal Validations ///////////////////////////////
+	//////////////////////// Validations ///////////////////////////////
 	
 	/**
 	 * Todas las sequencias deben contener caracteres validos.
@@ -125,7 +119,7 @@ public class MutantChecker {
 		for (String sequence: dna) {
 			if(sequence.length() != dna.length)
 				return false;
-				}
+		}
 		return true;
 	} 	
 }

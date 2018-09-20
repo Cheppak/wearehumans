@@ -1,5 +1,7 @@
 package ar.com.sac.mutant;
 
+import org.springframework.util.StringUtils;
+
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoDatabase;
@@ -9,14 +11,10 @@ import junit.framework.TestCase;
 
 public class MutantCheckerTestCase extends TestCase{
 
-	// Test facilitado por enunciado (caso base)
+	// Test facilitado por enunciado ("caso base")
 	public void testIsMutant(){
 		Human mutant = new Human();
 		mutant.setDna(new String[]{"ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"});
-		
-		MongoClientURI uri = new MongoClientURI(
-			    "mongodb+srv://cheppi74%40gmail.com:Mansur74!@cluster0-qbrko.gcp.mongodb.net/test?retryWrites=true");
-		
 		assertTrue(MutantChecker.isMutant(mutant.getDna()));
 	}
 	
@@ -28,23 +26,23 @@ public class MutantCheckerTestCase extends TestCase{
 
 	public void testIsMutantVerticalScan(){
 		Human mutant = new Human();
-		mutant.setDna(new String[]{"AAAAAA","CCCCCC","TTATCT","CTTACG","CCTATA","TCACTG"});
+		mutant.setDna(new String[]{"AAATAC","ATCCCC","ATATCC","ATTACC","CCTATC","TCACTG"});
 		assertTrue(MutantChecker.isMutant(mutant.getDna()));
 	}
 	
 	public void testIsNotMutant(){
 		Human human = new Human();
-		human.setDna(new String[]{"ATGGGA","CAGTGC","ATATGG","AGAAGT","CACCTA","TCAATG"});
+		human.setDna(new String[]{"ATGGGA","CAGTGC","ATATAG","AGAAGT","CACCTA","TCAATG"});
 		assertFalse(MutantChecker.isMutant(human.getDna()));
 	}
 	
-	public void testIsNotMutantBecouseHasBadSequenceLetter(){
+	public void testIsNotMutantBecauseHasBadSequenceLetter(){
 		Human crazyHuman = new Human();
 		crazyHuman.setDna(new String[]{"ATGGGA","CAXXGC","ATATGG","AGAAGT","CACCTA","TCAATG"});
 		assertFalse(MutantChecker.isMutant(crazyHuman.getDna()));
 	}
 	
-	public void testIsNotMutantBecouseHasBadNxNDnaMatrix(){
+	public void testIsNotMutantBecauseHasBadNxNDnaMatrix(){
 		Human crazyHuman = new Human();
 		crazyHuman.setDna(new String[]{"A","CAGTGC","ATAG","AGAAGT","CACCTA"});
 		assertFalse(MutantChecker.isMutant(crazyHuman.getDna()));
