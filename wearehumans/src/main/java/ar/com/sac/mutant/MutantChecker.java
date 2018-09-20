@@ -4,6 +4,10 @@ import org.apache.commons.lang3.StringUtils;
 
 public class MutantChecker {
 
+	private static final String C_SEQUENCE = "CCCC";
+	private static final String T_SEQUENCE = "TTTT";
+	private static final String G_SEQUENCE = "GGGG";
+	private static final String A_SEQUENCE = "AAAA";
 	private static final int MAX_CONCAT_LETTERS = 4;
 	private static final int MAX_MUTANT_SEQUENCE = 2;
 	private static final String VALID_SEQUENCE_LETTERS = "ATCG";
@@ -90,8 +94,7 @@ public class MutantChecker {
 	}
 	
 	private static int countMutantSequences(String sequence) {
-		int mutantSequences = StringUtils.countMatches(sequence,"CCCC") + StringUtils.countMatches(sequence,"AAAA") + StringUtils.countMatches(sequence,"GGGG") + StringUtils.countMatches(sequence,"TTTT") ;
-		return mutantSequences;
+		return StringUtils.countMatches(sequence,C_SEQUENCE) + StringUtils.countMatches(sequence,A_SEQUENCE) + StringUtils.countMatches(sequence,G_SEQUENCE) + StringUtils.countMatches(sequence,T_SEQUENCE) ;
 	}
 	
 	//////////////////////// Validations ///////////////////////////////
