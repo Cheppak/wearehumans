@@ -28,7 +28,7 @@ _Dentro del proyecto se encuentran tests unitarios (Junits) para la prueba del a
   - No cumple con la condicion (Forbidden)
   - No posee una matriz NxN
 
-* Para probar via app
+Para probar via app
   - GET /stats
   - POST /mutant (Json{dna})
 
