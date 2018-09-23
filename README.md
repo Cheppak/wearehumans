@@ -32,7 +32,7 @@ Para probar via app
   - GET /stats
   - POST /mutant (Json{dna})
 
-## Esquema de arquitectura
+## Esquema de arquitectura 📏
 
 ![Esquema](https://github.com/Cheppak/wearehumans/blob/master/esquema_wearehumans.jpg)
 
