@@ -1,62 +1,40 @@
-# Examen Mercadolibre (by Sergio Cheppi)
+# Examen Mercadolibre 
+_by Sergio Cheppi_
 
-
-## Comenzando 🚀
-
-_Estas instrucciones te permitirán obtener una copia del proyecto en funcionamiento en tu máquina local para propósitos de desarrollo y pruebas._
-
+Microservicio desarrollado con Spring Boot y desplegado mediante Kubernetes & Google Cloud.
 
 ### Pre-requisitos 📋
+_Para ejecuciones en entorno local tener instalado:_ 
+- Java8
+- git
+- maven
+- mongodb 
+- explorador + plugin cliente rest o alguna herramienta de testing rest 
+- ide a gusto (opcional)
 
-_Que cosas necesitas para instalar el software y como instalarlas_
+### Url de la app en la nube (ExternalIP+port) ☁
 
-```
-Da un ejemplo
-```
-
-### Instalación 🔧
-
-_Una serie de ejemplos paso a paso que te dice lo que debes ejecutar para tener un entorno de desarrollo ejecutandose_
-
-_Dí cómo será ese paso_
-
-```
-Da un ejemplo
-```
-
-_Y repite_
-
-```
-hasta finalizar
-```
-
-_Finaliza con un ejemplo de cómo obtener datos del sistema o como usarlos para una pequeña demo_
+http://35.202.84.146:8080/
 
 ## Ejecutando las pruebas ⚙️
 
-_Explica como ejecutar las pruebas automatizadas para este sistema_
+* Dentro del proyecto se encuentran tests unitarios (Junits) para la prueba del algoritmo. En ellas se incluyen:
+- Es mutante
+  - Caso base de ejemplo
+  - Scan horizontal
+  - Scan vertical
+- No es mutante
+  - Letras que no corresponden al dominio
+  - Porque no cumple con la condicion
+  - No posee una matriz NxN
 
-### Analice las pruebas end-to-end 🔩
+* Para probar via app
+  - GET /stats
+  - POST /mutant (Json{dna})
 
-_Explica que verifican estas pruebas y por qué_
+## Tutoriales de apoyo 🛠️
 
-```
-Da un ejemplo
-```
-
-### Y las pruebas de estilo de codificación ⌨️
-
-_Explica que verifican estas pruebas y por qué_
-
-```
-Da un ejemplo
-```
-
-## Deployment 📦
-
-_Agrega notas adicionales sobre como hacer deploy_
-
-## Construido con 🛠️
-
-* [Maven](https://maven.apache.org/) - Manejador de dependencias
+* [Springboot & docker] https://spring.io/guides/gs/spring-boot-docker/ (armado de dockerfile, utilizacion de plug de spotify, configuracion del pom)
+* [springboot & spotify docker maven plugin] https://github.com/spotify/docker-maven-plugin (nos permite crear images con mvn... mas info acerca del primer tuturial)
+* [Deploy on kubernetes] https://codelabs.developers.google.com/codelabs/cloud-springboot-kubernetes/#0
 
