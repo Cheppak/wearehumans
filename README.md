@@ -18,7 +18,7 @@ http://35.202.84.146:8080/
 
 ## Ejecutando las pruebas ⚙️
 
-* Dentro del proyecto se encuentran tests unitarios (Junits) para la prueba del algoritmo. En ellas se incluyen:
+_Dentro del proyecto se encuentran tests unitarios (Junits) para la prueba del algoritmo. En ellas se incluyen:_
 - Es mutante
   - Caso base de ejemplo
   - Scan horizontal
