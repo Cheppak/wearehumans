@@ -32,6 +32,15 @@ Para probar via app
   - GET /stats
   - POST /mutant (Json{dna})
 
+## Esquema de arquitectura
+
+![Esquema](https://github.com/Cheppak/wearehumans/blob/master/esquema_wearehumans.jpg)
+
+* Para desarrollar el servicio utilicé Java, ya que es lenguaje con el que mas estoy familiarizado y vengo trabajando desde hace un tiempo. Con Ayuda de Spring Boot pude crearlo rapidamente y tenerlo listo para correr. Además se puedo integrar en la nube cuando necesite hacerlo mediante plugin.
+* Opte por utilizar contenedores para alojar el servicio mediante Docker. Nos permite desplegar el servicio de forma segura y rapida. Necesitamos escalar horizontalmente para atender los requests.
+* Nuestro orquestador de contenedores es Kubernetes. Nos permite automatizar los despliegues, escalado y gestion de contenedores. Fuertemente integrado con la nube de Google. Exponemos la ip del balanceador de carga para acceder a la app.
+* Como Base de datos elegimos MongoDb, una NoSQL orientada a documentos. Podemos guardar facilmente nuestro json dna. Tambien permite escalar horizontalmente con balanceo de carga y admite replicas (+seguro). En este caso en particular utilizamos MongoDb Atlas (Base de datos como servicio), para facilitar la configuración.
+
 ## Tutoriales de apoyo 🛠️
 
 * [Springboot & docker] https://spring.io/guides/gs/spring-boot-docker/ (armado de dockerfile, utilizacion de plug de spotify, configuracion del pom)
