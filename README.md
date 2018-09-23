@@ -25,7 +25,7 @@ http://35.202.84.146:8080/
   - Scan vertical
 - No es mutante
   - Letras que no corresponden al dominio
-  - Porque no cumple con la condicion
+  - No cumple con la condicion (Forbidden)
   - No posee una matriz NxN
 
 * Para probar via app
