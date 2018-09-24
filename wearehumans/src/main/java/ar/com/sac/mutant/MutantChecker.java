@@ -4,11 +4,11 @@ import org.apache.commons.lang3.StringUtils;
 
 public class MutantChecker {
 
+	public static final String ERROR_MESSAGE_NXN = "La matriz no posee un dimensiones NxN válidas";
 	private static final String C_SEQUENCE = "CCCC";
 	private static final String T_SEQUENCE = "TTTT";
 	private static final String G_SEQUENCE = "GGGG";
 	private static final String A_SEQUENCE = "AAAA";
-	private static final int MAX_CONCAT_LETTERS = 4;
 	private static final int MAX_MUTANT_SEQUENCE = 2;
 	private static final String VALID_SEQUENCE_LETTERS = "ATCG";
 	
@@ -18,18 +18,15 @@ public class MutantChecker {
 	 * @return boolean 
 	 */
 	public static boolean isMutant(String[] dna){
-		
-		if(!hasValidSequences(dna))
-			return false;
-		if(!hasValidNXNDnaMatrix(dna))
-			return false;
+		checkValidSequences(dna);
+		checkValidNXNDnaMatrix(dna);
 		return hasALotOfMutantSequences(dna);
 	}
 	
 	/**
-	 * Es mutante, si encuentras más de "MAX_MUTANTS_SEQUENCE" secuencia de "MAX_CONCAT_LETTERS" letras
+	 * Es mutante si encuentras más de "MAX_MUTANTS_SEQUENCE" secuencia de "MAX_CONCAT_LETTERS" letras
 	 * iguales de forma oblicua, horizontal o vertical. Escaneamos la matriz NxN en busca de de ellas.
-	 * Primeramente se escanea de forma horizontal, luego vertical y oblicua
+	 * Primeramente se escanea de forma horizontal, luego vertical y oblicua. Si cumple con la condicion corta el algoritmo (para no seguir procesando en vano)
 	 * @param matrix
 	 * @return boolean
 	 */
@@ -56,7 +53,7 @@ public class MutantChecker {
 				return true;
 		}
 		
-		// diagonal Scan
+		// diagonal Scan "\"
 		for(int x=0; x < matrix[0].length; x++) {
 			String diagonal = ""; 
 			for(int y=0; y < matrix[0].length - x ; y++){
@@ -76,6 +73,27 @@ public class MutantChecker {
 				return true;
 		}
 		
+		// diagonal Scan "/" 
+		for(int x=0; x < matrix[0].length ; x++) {
+			String diagonal = ""; 
+			for(int y=0; y < matrix[0].length -x ; y++) {
+				diagonal = diagonal + matrix[matrix[0].length-1-x-y][y];
+			}
+			mutantSequences = mutantSequences + countMutantSequences(diagonal);
+			if(mutantSequences >= MAX_MUTANT_SEQUENCE)
+				return true;
+		}
+		
+		for(int y=1; y < matrix[0].length; y++) {
+			String diagonal = "";
+			for(int x=0; x < matrix[0].length - y; x++){
+				diagonal = diagonal + matrix[matrix[0].length-1-x][y+x];
+			}
+			mutantSequences = mutantSequences + countMutantSequences(diagonal);
+			if(mutantSequences >= MAX_MUTANT_SEQUENCE)
+				return true;
+		}
+			
 		return false;
 	}
 	
@@ -103,13 +121,12 @@ public class MutantChecker {
 	 * Todas las sequencias deben contener caracteres validos.
 	 * @param dna
 	 */
-	private static boolean hasValidSequences(String[] dna){
+	private static void checkValidSequences(String[] dna){
 		
 		for (String sequence: dna) {
 			if(!StringUtils.containsOnly(sequence,VALID_SEQUENCE_LETTERS))
-				return false;
+				throw new RuntimeException("La matriz posee caracteres que no corresponden al dominio. Secuencia " + sequence );
 		}
-		return true;
 	}
 	
 	/**
@@ -117,12 +134,11 @@ public class MutantChecker {
 	 * @param dna
 	 * @return
 	 */
-	private static boolean hasValidNXNDnaMatrix(String[] dna){
+	private static void checkValidNXNDnaMatrix(String[] dna){
 		
 		for (String sequence: dna) {
 			if(sequence.length() != dna.length)
-				return false;
+				throw new RuntimeException(ERROR_MESSAGE_NXN);
 		}
-		return true;
 	} 	
 }
