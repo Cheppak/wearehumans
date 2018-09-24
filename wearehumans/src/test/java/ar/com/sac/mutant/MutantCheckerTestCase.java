@@ -1,11 +1,5 @@
 package ar.com.sac.mutant;
 
-import org.springframework.util.StringUtils;
-
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
-import com.mongodb.client.MongoDatabase;
-
 import ar.com.sac.human.Human;
 import junit.framework.TestCase;
 
@@ -29,6 +23,12 @@ public class MutantCheckerTestCase extends TestCase{
 		mutant.setDna(new String[]{"AAATAC","ATCCCC","ATATCC","ATTACC","CCTATC","TCACTG"});
 		assertTrue(MutantChecker.isMutant(mutant.getDna()));
 	}
+
+	public void testIsMutantDiagnonalScan(){
+		Human mutant = new Human();
+		mutant.setDna(new String[]{"ATGA","GAAT","CAAT","ATTA"});
+		assertTrue(MutantChecker.isMutant(mutant.getDna()));
+	}
 	
 	public void testIsNotMutant(){
 		Human human = new Human();
@@ -38,14 +38,28 @@ public class MutantCheckerTestCase extends TestCase{
 	
 	public void testIsNotMutantBecauseHasBadSequenceLetter(){
 		Human crazyHuman = new Human();
-		crazyHuman.setDna(new String[]{"ATGGGA","CAXXGC","ATATGG","AGAAGT","CACCTA","TCAATG"});
-		assertFalse(MutantChecker.isMutant(crazyHuman.getDna()));
+		String badSequence = "CAXXGC";
+		String[] dna = new String[]{"ATGGGA",badSequence,"ATATGG","AGAAGT","CACCTA","TCAATG"};
+		crazyHuman.setDna(dna);
+		try {
+			MutantChecker.isMutant(crazyHuman.getDna());
+			fail();
+		}
+		catch(RuntimeException e) {
+			assertTrue(e.getMessage().contains(badSequence));
+		}
 	}
 	
 	public void testIsNotMutantBecauseHasBadNxNDnaMatrix(){
 		Human crazyHuman = new Human();
-		crazyHuman.setDna(new String[]{"A","CAGTGC","ATAG","AGAAGT","CACCTA"});
-		assertFalse(MutantChecker.isMutant(crazyHuman.getDna()));
+		String[] dna = new String[]{"A","CAGTGC","ATAG","AGAAGT","CACCTA"};
+		crazyHuman.setDna(dna);
+		try {
+			MutantChecker.isMutant(crazyHuman.getDna());
+			fail();
+		}catch(RuntimeException e) {
+			assertTrue(e.getMessage().equals(MutantChecker.ERROR_MESSAGE_NXN));
+		}
 	}	
 	
 }
